@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>فشرده‌ساز هوشمند تصویر</title>
+    <title>ImageCompressor | فشرده‌ساز تصویر</title>
+    <meta name="description" content="کاهش حجم تصاویر بدون افت کیفیت، کاملاً رایگان." />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -19,11 +20,11 @@
             <nav class="nav" id="mainNav">
                 <ul class="nav-list">
                     <li><a href="#" class="active" data-page="home"><i class="fas fa-home"></i> خانه</a></li>
-                    <li><a href="#" data-page="history"><i class="fas fa-history"></i> تاریخچه</a></li>
-                    <li><a href="#" data-page="about"><i class="fas fa-info-circle"></i> درباره</a></li>
+                    <li><a href="#" data-page="history"><i class="fas fa-clock"></i> تاریخچه</a></li>
+                    <li><a href="#" data-page="about"><i class="fas fa-circle-info"></i> درباره</a></li>
                 </ul>
             </nav>
-            <button class="hamburger" id="hamburger">
+            <button class="hamburger" id="hamburger" aria-label="منو">
                 <span></span><span></span><span></span>
             </button>
         </div>
@@ -32,35 +33,44 @@
     <!-- ===== MAIN ===== -->
     <main class="main">
 
-        <!-- صفحه خانه -->
+        <!-- ===== صفحه خانه ===== -->
         <section id="page-home" class="page active">
             <div class="hero">
                 <div class="hero-content">
-                    <span class="hero-badge">⚡ سریع و هوشمند</span>
-                    <h1>فشرده‌سازی<br />تصاویر حرفه‌ای</h1>
-                    <p>کاهش حجم تا ۸۰٪ بدون افت کیفیت — کاملاً در مرورگر شما</p>
+                    <span class="hero-badge">⚡ نسخه 2.5.1</span>
+                    <h1>بهینه‌سازی هوشمند<br />تصاویر در کسری از ثانیه</h1>
+                    <p class="subtitle">کاهش حجم تا <strong>۸۵٪</strong>بدون افت کیفیت قابل‌مشاهده</p>
                     <div class="hero-features">
-                        <span><i class="fas fa-check-circle"></i> بدون اینترنت</span>
-                        <span><i class="fas fa-check-circle"></i> حریم خصوصی</span>
-                        <span><i class="fas fa-check-circle"></i> رایگان</span>
+                        <span><i class="fas fa-check-circle"></i> آفلاین و امن</span>
+                        <span><i class="fas fa-check-circle"></i> حریم خصوصی کامل</span>
+                        <span><i class="fas fa-check-circle"></i> کاملاً رایگان</span>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-icons">
+                        <i class="fas fa-image"></i>
+                        <i class="fas fa-arrow-right"></i>
+                        <i class="fas fa-file-image"></i>
                     </div>
                 </div>
             </div>
 
             <div class="compressor-wrapper">
+                <!-- منطقه آپلود -->
                 <div class="upload-box" id="uploadArea">
                     <div class="upload-icon">
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
-                    <h3>تصویر را بکشید یا کلیک کنید</h3>
-                    <p>PNG · JPG · WebP — تا ۲۰ مگابایت</p>
+                    <h3>تصویر خود را اینجا بکشید</h3>
+                    <p>یا برای انتخاب فایل کلیک کنید</p>
+                    <span class="hint"><i class="fas fa-info-circle"></i> پشتیبانی از PNG, JPG, WebP — حداکثر ۲۰ مگابایت</span>
                     <input type="file" id="fileInput" accept="image/*" />
                 </div>
 
                 <!-- لودینگ -->
                 <div class="loading-box" id="loadingBox">
                     <div class="spinner"></div>
-                    <p>در حال فشرده‌سازی...</p>
+                    <p class="loading-text">در حال بهینه‌سازی تصویر...</p>
                     <div class="progress-track">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
@@ -71,7 +81,7 @@
                     <div class="result-grid">
                         <div class="result-card">
                             <div class="result-header">
-                                <span>اصلی</span>
+                                <span>نسخه اصلی</span>
                                 <span class="tag" id="origSize">۰ KB</span>
                             </div>
                             <div class="result-image">
@@ -80,73 +90,79 @@
                         </div>
                         <div class="result-card highlight">
                             <div class="result-header">
-                                <span>فشرده</span>
+                                <span>نسخه بهینه‌شده</span>
                                 <span class="tag success" id="compSize">۰ KB</span>
                             </div>
                             <div class="result-image">
-                                <img id="compImg" alt="تصویر فشرده" />
+                                <img id="compImg" alt="تصویر بهینه‌شده" />
                             </div>
                         </div>
                     </div>
 
                     <div class="result-stats">
                         <div>
-                            <span>کاهش</span>
-                            <strong id="savedStat">۰%</strong>
+                            <span>کاهش حجم</span>
+                            <strong id="savedStat">۰٪</strong>
                         </div>
                         <div>
-                            <span>کیفیت</span>
+                            <span>وضعیت کیفیت</span>
                             <strong id="qualityStat">عالی</strong>
                         </div>
                         <div>
-                            <span>زمان</span>
+                            <span>زمان پردازش</span>
                             <strong id="timeStat">۰ms</strong>
                         </div>
                     </div>
 
                     <div class="result-actions">
                         <button id="downloadBtn" class="btn-primary">
-                            <i class="fas fa-download"></i> دانلود
+                            <i class="fas fa-download"></i> دانلود فایل بهینه‌شده
                         </button>
                         <button id="resetBtn" class="btn-secondary">
-                            <i class="fas fa-redo"></i> دوباره
+                            <i class="fas fa-rotate-right"></i> انتخاب مجدد
                         </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- صفحه تاریخچه -->
+        <!-- ===== صفحه تاریخچه ===== -->
         <section id="page-history" class="page">
             <div class="page-head">
-                <h2><i class="fas fa-history"></i> تاریخچه</h2>
+                <h2><i class="fas fa-clock"></i> تاریخچه عملیات‌ها</h2>
                 <button id="clearAllBtn" class="btn-danger">
-                    <i class="fas fa-trash"></i> پاک کردن
+                    <i class="fas fa-trash-can"></i> پاک کردن همه
                 </button>
             </div>
             <div id="historyContainer" class="history-container"></div>
             <div id="emptyHistory" class="empty-state">
                 <i class="fas fa-inbox"></i>
-                <h3>تاریخچه خالی</h3>
-                <p>هنوز تصویری فشرده نکردید</p>
+                <h3>تاریخچه خالی است</h3>
+                <p>هنوز هیچ تصویری بهینه‌سازی نکرده‌اید.</p>
                 <button onclick="showPage('home')" class="btn-primary">
-                    <i class="fas fa-arrow-left"></i> برو به فشرده‌ساز
+                    <i class="fas fa-arrow-left"></i> شروع بهینه‌سازی
                 </button>
             </div>
         </section>
 
-        <!-- صفحه درباره -->
+        <!-- ===== صفحه درباره ===== -->
         <section id="page-about" class="page">
             <div class="about-box">
-                <h2><i class="fas fa-info-circle"></i> درباره ما</h2>
+                <h2><i class="fas fa-circle-info"></i> درباره ImageCompressor</h2>
                 <p>
-                    <strong>ImageCompressor</strong> ابزاری رایگان برای کاهش حجم تصاویر
-                    بدون افت کیفیت. تمام پردازش‌ها در مرورگر شما انجام می‌شود.
+                    <strong>ImageCompressor</strong> یک ابزار هوشمند و کاملاً آفلاین برای بهینه‌سازی تصاویر است.
+                    با استفاده از الگوریتم‌های پیشرفته، حجم تصاویر شما را تا <strong>۸۵٪</strong> کاهش می‌دهد
+                    بدون اینکه کیفیت قابل‌مشاهده‌ای از دست برود.
+                </p>
+                <p>
+                    تمام پردازش‌ها در مرورگر شما انجام می‌شود. هیچ تصویری به سرور ارسال نمی‌شود و
+                    حریم خصوصی شما به‌طور کامل حفظ می‌گردد.
                 </p>
                 <div class="about-tags">
                     <span><i class="fab fa-github"></i> متن‌باز</span>
-                    <span><i class="fas fa-lock"></i> امن</span>
-                    <span><i class="fas fa-bolt"></i> سریع</span>
+                    <span><i class="fas fa-lock"></i> امن و خصوصی</span>
+                    <span><i class="fas fa-bolt"></i> فوق‌العاده سریع</span>
+                    <span><i class="fas fa-heart" style="color:#e74c3c;"></i> ساخته‌شده با ❤️  </span>
                 </div>
             </div>
         </section>
@@ -156,9 +172,9 @@
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="footer-container">
-            <p><i class="fas fa-heart" style="color:#e74c3c;"></i> ساخته شده در ایران</p>
+            <p>ساخته‌شده با <i class="fas fa-heart" style="color:#e74c3c;"></i></p>
             <div class="footer-links">
-                <a href="#" onclick="showPage('about')">درباره</a>
+                <a href="#" onclick="showPage('about')">درباره ما</a>
                 <a href="https://github.com" target="_blank"><i class="fab fa-github"></i> گیت‌هاب</a>
             </div>
         </div>
@@ -168,11 +184,8 @@
     <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js">
     </script>
 
-    <!-- ===== فایل‌های JS جداگانه ===== -->
-    <script src="js/navigation.js"></script>
-    <script src="js/history.js"></script>
-    <script src="js/compressor.js"></script>
-    <script src="js/app.js"></script>
+    <!-- ===== اسکریپت ===== -->
+    <script src="js/script.js"></script>
 
 </body>
 </html>
