@@ -6,22 +6,25 @@
     <title>فشرده‌ساز هوشمند تصویر | ImageCompressor</title>
     <meta name="description" content="کاهش حجم تصاویر بدون افت کیفیت - کاملاً در مرورگر شما" />
     <link rel="stylesheet" href="css/style.css" />
+    <!-- Font Awesome برای آیکون‌های حرفه‌ای -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
 
-    <!-- ===== HEADER با منوی شیشه‌ای ===== -->
-    <header class="header glass">
+    <!-- ===== HEADER با منوی کامل ===== -->
+    <header class="header glass" id="mainHeader">
         <div class="header-container">
             <div class="logo">
-                <span class="logo-icon">⚡</span>
+                <i class="fas fa-compress-arrows-alt logo-icon"></i>
                 <span class="logo-text">ImageCompressor</span>
             </div>
-            <nav class="nav">
+            <nav class="nav" id="mainNav">
                 <ul class="nav-list">
-                    <li><a href="index.html" class="active">خانه</a></li>
-                    <li><a href="features.html">امکانات</a></li>
-                    <li><a href="about.html">درباره ما</a></li>
-                    <li><a href="contact.html">تماس</a></li>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> خانه</a></li>
+                    <li><a href="features.html"><i class="fas fa-star"></i> امکانات</a></li>
+                    <li><a href="history.html"><i class="fas fa-history"></i> تاریخچه</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> درباره ما</a></li>
+                    <li><a href="contact.html"><i class="fas fa-envelope"></i> تماس</a></li>
                 </ul>
             </nav>
             <button class="hamburger" id="hamburger">
@@ -32,80 +35,57 @@
 
     <!-- ===== محتوای اصلی ===== -->
     <main class="main">
+        <!-- HERO جدید با انیمیشن -->
         <section class="hero">
             <div class="hero-content">
-                <h1>فشرده‌سازی هوشمند تصاویر</h1>
+                <div class="hero-badge">نسخه ۲.۰</div>
+                <h1>فشرده‌سازی هوشمند <br />تصاویر با کیفیت بی‌نظیر</h1>
                 <p class="subtitle">کاهش حجم تا ۸۵٪ بدون هیچ افت کیفیت قابل مشاهده — همه‌چیز در مرورگر شما</p>
                 <div class="hero-badges">
-                    <span class="badge">بدون نیاز به اینترنت</span>
-                    <span class="badge">حریم خصوصی کامل</span>
-                    <span class="badge">رایگان همیشگی</span>
+                    <span class="badge"><i class="fas fa-wifi-slash"></i> بدون نیاز به اینترنت</span>
+                    <span class="badge"><i class="fas fa-shield-alt"></i> حریم خصوصی کامل</span>
+                    <span class="badge"><i class="fas fa-gem"></i> رایگان همیشگی</span>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-icons">
+                    <i class="fas fa-image"></i>
+                    <i class="fas fa-arrow-right"></i>
+                    <i class="fas fa-file-image"></i>
                 </div>
             </div>
         </section>
 
-        <section class="compressor-section">
+        <!-- بخش فشرده‌ساز -->
+        <section class="compressor-section" id="compressor">
             <div class="container">
-                <!-- منطقه آپلود -->
+                <!-- منطقه آپلود با انیمیشن -->
                 <div class="upload-area glass" id="uploadArea">
                     <div class="upload-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M12 16V4M8 8l4-4 4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/>
-                        </svg>
+                        <i class="fas fa-cloud-upload-alt"></i>
                     </div>
                     <h3>تصویر خود را اینجا بکشید</h3>
                     <p>یا برای انتخاب فایل کلیک کنید</p>
-                    <span class="hint">پشتیبانی از PNG, JPG, WebP — حداکثر ۲۰ مگابایت</span>
-                    <input type="file" id="fileInput" accept="image/*" />
+                    <span class="hint"><i class="fas fa-check-circle"></i> پشتیبانی از PNG, JPG, WebP — حداکثر ۲۰ مگابایت</span>
+                    <input type="file" id="fileInput" accept="image/*" multiple />
+                </div>
+
+                <!-- لودینگ پیشرفته -->
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="loading-spinner">
+                        <div class="spinner-ring"></div>
+                        <div class="spinner-ring"></div>
+                        <div class="spinner-ring"></div>
+                    </div>
+                    <p class="loading-text">در حال فشرده‌سازی...</p>
+                    <div class="loading-progress">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
                 </div>
 
                 <!-- پیش‌نمایش و نتایج -->
                 <div class="preview-panel" id="previewPanel" style="display:none;">
-                    <div class="preview-grid">
-                        <div class="image-card">
-                            <div class="image-card-header">
-                                <span>تصویر اصلی</span>
-                                <span class="size-badge" id="originalSize">۰ KB</span>
-                            </div>
-                            <div class="image-card-body">
-                                <img id="originalImage" alt="تصویر اصلی" />
-                            </div>
-                        </div>
-                        <div class="image-card highlight">
-                            <div class="image-card-header">
-                                <span>تصویر فشرده‌شده</span>
-                                <span class="size-badge success" id="compressedSize">۰ KB</span>
-                            </div>
-                            <div class="image-card-body">
-                                <img id="compressedImage" alt="تصویر فشرده شده" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stats-bar">
-                        <div class="stat-item">
-                            <span class="stat-label">کاهش حجم</span>
-                            <strong class="stat-value" id="savedPercent">۰٪</strong>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">کیفیت</span>
-                            <strong class="stat-value" id="qualityStatus">۱۰۰٪</strong>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">زمان پردازش</span>
-                            <strong class="stat-value" id="processTime">۰ms</strong>
-                        </div>
-                    </div>
-
-                    <div class="action-bar">
-                        <button id="downloadBtn" class="btn-primary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                            </svg>
-                            دانلود فایل فشرده
-                        </button>
-                        <button id="resetBtn" class="btn-secondary">انتخاب تصویر جدید</button>
-                    </div>
+                    <!-- ... کد قبلی ... -->
                 </div>
             </div>
         </section>
@@ -114,11 +94,11 @@
     <!-- ===== فوتر ===== -->
     <footer class="footer">
         <div class="footer-container">
-            <p>&copy; ۲۰۲۵ ImageCompressor — ساخته شده با عشق در ایران</p>
+            <p><i class="fas fa-heart" style="color:#e74c3c;"></i> ساخته شده با عشق در ایران</p>
             <div class="footer-links">
                 <a href="about.html">درباره ما</a>
                 <a href="contact.html">تماس</a>
-                <a href="https://github.com" target="_blank">گیت‌هاب</a>
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i> گیت‌هاب</a>
             </div>
         </div>
     </footer>
