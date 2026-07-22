@@ -2,13 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== منوی همبرگر =====
     const hamburger = document.getElementById('hamburger');
     const nav = document.querySelector('.nav');
+    const header = document.getElementById('mainHeader');
 
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         nav.classList.toggle('open');
     });
 
-    // بستن منو با کلیک روی لینک
     document.querySelectorAll('.nav-list a').forEach(link => {
         link.addEventListener('click', () => {
             hamburger.classList.remove('active');
@@ -16,10 +16,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ===== اسکرول نرم =====
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        if (currentScroll > 100) {
+            header.style.boxShadow = '0 4px 30px rgba(0,0,0,0.08)';
+        } else {
+            header.style.boxShadow = 'none';
+        }
+        lastScroll = currentScroll;
+    });
+
     // ===== عناصر فشرده‌ساز =====
     const uploadArea = document.getElementById('uploadArea');
     const fileInput = document.getElementById('fileInput');
     const previewPanel = document.getElementById('previewPanel');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const progressBar = document.getElementById('progressBar');
     const originalImage = document.getElementById('originalImage');
     const compressedImage = document.getElementById('compressedImage');
     const originalSize = document.getElementById('originalSize');
@@ -34,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalFile = null;
     let originalFileName = '';
     let startTime = 0;
+    let history = JSON.parse(localStorage.getItem('compressionHistory') || '[]');
 
     // ===== رویدادهای آپلود =====
     uploadArea.addEventListener('dragover', (e) => {
@@ -59,9 +74,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ===== پردازش اصلی =====
+    // ===== تابع بارگذاری پیشرفت =====
+    function simulateProgress(duration) {
+        return new Promise((resolve) => {
+            let start = 0;
+            const interval = 30;
+            const step = 100 / (duration / interval);
+            
+            const timer = setInterval(() => {
+                start += step;
+                if (start >= 100) {
+                    clearInterval(timer);
+                    progressBar.style.width = '100%';
+                    resolve();
+                } else {
+                    progressBar.style.width = Math.min(start, 99) + '%';
+                }
+            }, interval);
+        });
+    }
+
+    // ===== پردازش اصلی با لودینگ =====
     async function handleFile(file) {
-        // اعتبارسنجی
         if (!file.type.startsWith('image/')) {
             alert('لطفاً فقط فایل تصویری انتخاب کنید.');
             return;
@@ -83,42 +117,54 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         reader.readAsDataURL(file);
 
-        // فشرده‌سازی پیشرفته
+        // نمایش لودینگ با انیمیشن
+        loadingOverlay.style.display = 'flex';
+        progressBar.style.width = '0%';
+        previewPanel.style.display = 'none';
+
+        // شبیه‌سازی بارگذاری (۲-۳ ثانیه)
+        const loadPromise = simulateProgress(2500);
+
         try {
-            // مرحله ۱: فشرده‌سازی با کیفیت بالا
-            const options = {
-                maxSizeMB: 0.8,
-                maxWidthOrHeight: 2048,
-                useWebWorker: true,
-                quality: 0.95,
-                initialQuality: 0.95,
-                fileType: 'image/webp',
-                alwaysKeepResolution: true,
-                preserveExif: false,
-            };
+            // فشرده‌سازی واقعی
+            const compressionPromise = (async () => {
+                const options = {
+                    maxSizeMB: 0.8,
+                    maxWidthOrHeight: 2048,
+                    useWebWorker: true,
+                    quality: 0.95,
+                    fileType: 'image/webp',
+                    alwaysKeepResolution: true,
+                    preserveExif: false,
+                };
 
-            const compressed = await imageCompression(file, options);
+                const compressed = await imageCompression(file, options);
+                
+                // مرحله دوم برای کاهش بیشتر
+                const finalOptions = {
+                    maxSizeMB: 0.6,
+                    maxWidthOrHeight: 2048,
+                    useWebWorker: true,
+                    quality: 0.92,
+                    fileType: 'image/webp',
+                    alwaysKeepResolution: true,
+                };
+
+                const finalCompressed = await imageCompression(
+                    new File([compressed], 'temp.webp', { type: 'image/webp' }),
+                    finalOptions
+                );
+
+                return finalCompressed.size < compressed.size ? finalCompressed : compressed;
+            })();
+
+            // اجرای همزمان لودینگ و فشرده‌سازی
+            const [compressed] = await Promise.all([
+                compressionPromise,
+                loadPromise
+            ]);
+
             compressedBlob = compressed;
-
-            // مرحله ۲: فشرده‌سازی مجدد با کیفیت نهایی (برای کاهش بیشتر)
-            const finalOptions = {
-                maxSizeMB: 0.6,
-                maxWidthOrHeight: 2048,
-                useWebWorker: true,
-                quality: 0.92,
-                fileType: 'image/webp',
-                alwaysKeepResolution: true,
-            };
-
-            const finalCompressed = await imageCompression(
-                new File([compressed], 'temp.webp', { type: 'image/webp' }),
-                finalOptions
-            );
-
-            // اگر حجم نهایی کمتر بود، جایگزین کن
-            if (finalCompressed.size < compressed.size) {
-                compressedBlob = finalCompressed;
-            }
 
             // نمایش تصویر فشرده
             const compressedReader = new FileReader();
@@ -136,14 +182,33 @@ document.addEventListener('DOMContentLoaded', () => {
             originalSize.textContent = `${origSizeKB} KB`;
             compressedSize.textContent = `${compSizeKB} KB`;
             savedPercent.textContent = `${saved}%`;
-            qualityStatus.textContent = `${saved > 80 ? 'عالی' : saved > 60 ? 'خوب' : 'مطلوب'}`;
+            qualityStatus.textContent = saved > 70 ? 'عالی' : saved > 50 ? 'خوب' : 'مطلوب';
             processTime.textContent = `${elapsed}ms`;
 
-            previewPanel.style.display = 'block';
-            previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // ذخیره در تاریخچه
+            const historyItem = {
+                id: Date.now(),
+                name: originalFileName,
+                originalSize: origSizeKB,
+                compressedSize: compSizeKB,
+                saved: saved,
+                date: new Date().toLocaleString('fa-IR'),
+                preview: originalImage.src
+            };
+            history.unshift(historyItem);
+            if (history.length > 50) history.pop();
+            localStorage.setItem('compressionHistory', JSON.stringify(history));
+
+            // نمایش نتایج
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                previewPanel.style.display = 'block';
+                previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
 
         } catch (error) {
-            console.error('خطا در فشرده‌سازی:', error);
+            console.error('خطا:', error);
+            loadingOverlay.style.display = 'none';
             alert('خطا در پردازش تصویر. لطفاً دوباره امتحان کنید.');
         }
     }
@@ -164,13 +229,13 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
         setTimeout(() => URL.revokeObjectURL(link.href), 5000);
     });
 
     // ===== ریست =====
     resetBtn.addEventListener('click', () => {
         previewPanel.style.display = 'none';
+        loadingOverlay.style.display = 'none';
         compressedBlob = null;
         originalFile = null;
         fileInput.value = '';
