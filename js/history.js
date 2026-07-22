@@ -1,31 +1,34 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const historyList = document.getElementById('historyList');
-    const emptyHistory = document.getElementById('emptyHistory');
-    const clearBtn = document.getElementById('clearHistory');
+// ===== مدیریت تاریخچه =====
+let historyData = JSON.parse(localStorage.getItem('compHistory') || '[]');
 
-    let history = JSON.parse(localStorage.getItem('compressionHistory') || '[]');
+function saveHistory() {
+    localStorage.setItem('compHistory', JSON.stringify(historyData));
+}
 
-    function renderHistory() {
-        if (history.length === 0) {
-            historyList.innerHTML = '';
-            emptyHistory.style.display = 'block';
-            return;
-        }
-        emptyHistory.style.display = 'none';
+function renderHistory() {
+    const container = document.getElementById('historyContainer');
+    const empty = document.getElementById('emptyHistory');
 
-        historyList.innerHTML = history.map(item => `
+    if (historyData.length === 0) {
+        container.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+    empty.style.display = 'none';
+
+    container.innerHTML = historyData.map(item => `
             <div class="history-item" data-id="${item.id}">
                 <div class="history-preview">
                     <img src="${item.preview}" alt="${item.name}" />
                 </div>
                 <div class="history-info">
                     <h4>${item.name}</h4>
-                    <div class="history-stats">
-                        <span><i class="fas fa-arrow-down"></i> ${item.originalSize} KB</span>
-                        <span><i class="fas fa-arrow-up"></i> ${item.compressedSize} KB</span>
-                        <span class="saved-badge">-${item.saved}%</span>
+                    <div class="history-meta">
+                        <span>⬇ ${item.origSize} KB</span>
+                        <span>⬆ ${item.compSize} KB</span>
+                        <span class="saved">-${item.saved}%</span>
+                        <span>${item.date}</span>
                     </div>
-                    <span class="history-date"><i class="far fa-clock"></i> ${item.date}</span>
                 </div>
                 <button class="history-delete" data-id="${item.id}">
                     <i class="fas fa-times"></i>
@@ -33,25 +36,37 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `).join('');
 
-        // رویداد حذف تکی
-        document.querySelectorAll('.history-delete').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(btn.dataset.id);
-                history = history.filter(item => item.id !== id);
-                localStorage.setItem('compressionHistory', JSON.stringify(history));
-                renderHistory();
-            });
-        });
-    }
-
-    // پاک کردن همه
-    clearBtn.addEventListener('click', () => {
-        if (confirm('آیا مطمئن هستید که همه تاریخچه پاک شود؟')) {
-            history = [];
-            localStorage.setItem('compressionHistory', JSON.stringify(history));
+    // حذف تکی
+    document.querySelectorAll('.history-delete').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = parseInt(this.dataset.id);
+            historyData = historyData.filter(item => item.id !== id);
+            saveHistory();
             renderHistory();
-        }
+        });
     });
+}
 
-    renderHistory();
+// ===== پاک کردن همه =====
+document.getElementById('clearAllBtn').addEventListener('click', function() {
+    if (confirm('همه تاریخچه پاک شود؟')) {
+        historyData = [];
+        saveHistory();
+        renderHistory();
+    }
 });
+
+// ===== افزودن آیتم جدید =====
+function addHistoryItem(name, origSize, compSize, saved, preview) {
+    historyData.unshift({
+        id: Date.now(),
+        name,
+        origSize,
+        compSize,
+        saved,
+        date: new Date().toLocaleString('fa-IR'),
+        preview
+    });
+    if (historyData.length > 50) historyData.pop();
+    saveHistory();
+}
