@@ -1,538 +1,291 @@
-/* ===== ریست و فونت ===== */
-* {
+/* ===== لودینگ پیشرفته ===== */
+.loading-overlay {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius);
+    margin-top: 2rem;
+    animation: fadeSlideUp 0.4s ease;
+}
+
+.loading-spinner {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.spinner-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--accent);
+    animation: spin 0.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.spinner-ring:nth-child(2) {
+    animation-delay: -0.3s;
+    border-top-color: var(--primary-light);
+}
+
+.spinner-ring:nth-child(3) {
+    animation-delay: -0.6s;
+    border-top-color: var(--accent-light);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-text {
+    margin-top: 1.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.loading-progress {
+    width: 80%;
+    max-width: 400px;
+    height: 4px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 4px;
+    margin-top: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* ===== صفحه تاریخچه ===== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.page-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.btn-danger {
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.btn-danger:hover {
+    background: #fecaca;
+    transform: translateY(-2px);
+}
+
+.history-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    border: 1px solid rgba(255,255,255,0.4);
+    transition: var(--transition);
+    position: relative;
+}
+
+.history-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+
+.history-preview {
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f0f5fa;
+}
+
+.history-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.history-info {
+    flex: 1;
+}
+
+.history-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary);
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-:root {
-    --primary: #0a1e2b;
-    --primary-light: #1a3b4f;
-    --accent: #2d7a9b;
-    --accent-light: #4da0c7;
-    --glass-bg: rgba(255, 255, 255, 0.55);
-    --glass-border: rgba(255, 255, 255, 0.25);
-    --shadow: 0 8px 32px rgba(0, 20, 40, 0.08);
-    --radius: 24px;
-    --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.history-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.2rem;
+    font-size: 0.8rem;
+    color: #3d5e6e;
 }
 
+.history-stats i {
+    margin-left: 0.2rem;
+}
+
+.saved-badge {
+    background: rgba(45, 155, 120, 0.15);
+    color: #1a8a6a;
+    padding: 0.1rem 0.6rem;
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+.history-date {
+    font-size: 0.75rem;
+    color: #6a8a98;
+    display: block;
+    margin-top: 0.2rem;
+}
+
+.history-delete {
+    background: none;
+    border: none;
+    color: #9a9a9a;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: var(--transition);
+    font-size: 1.1rem;
+}
+
+.history-delete:hover {
+    color: #dc2626;
+    background: rgba(220,38,38,0.08);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(255,255,255,0.4);
+    border-radius: var(--radius);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: #b6ccd8;
+}
+
+.empty-state h3 {
+    margin: 1rem 0 0.5rem;
+    color: var(--primary);
+}
+
+.empty-state p {
+    color: #6a8a98;
+}
+
+/* ===== بهبود اسکرول ===== */
 html {
     scroll-behavior: smooth;
 }
 
-body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: #f0f5fa;
-    color: #0a1e2b;
-    line-height: 1.6;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) #e9f1f8;
 }
 
-/* ===== کلاس شیشه‌ای ===== */
-.glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(18px) saturate(160%);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--shadow);
+::-webkit-scrollbar {
+    width: 6px;
 }
 
-/* ===== HEADER شیشه‌ای ===== */
-.header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    padding: 0.8rem 0;
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(20px) saturate(170%);
-    -webkit-backdrop-filter: blur(20px) saturate(170%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+::-webkit-scrollbar-track {
+    background: #e9f1f8;
 }
 
-.header-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-weight: 800;
-    font-size: 1.3rem;
-    color: var(--primary);
-    text-decoration: none;
-}
-
-.logo-icon {
-    font-size: 1.6rem;
-    line-height: 1;
-}
-
-.logo-text {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.nav-list {
-    display: flex;
-    list-style: none;
-    gap: 0.3rem;
-}
-
-.nav-list a {
-    padding: 0.5rem 1.2rem;
-    border-radius: 50px;
-    text-decoration: none;
-    color: #1a3b4f;
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: var(--transition);
-    position: relative;
-}
-
-.nav-list a:hover,
-.nav-list a.active {
-    background: rgba(45, 122, 155, 0.12);
-    color: var(--accent);
-}
-
-.nav-list a.active::after {
-    content: '';
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 2.5px;
-    border-radius: 4px;
+::-webkit-scrollbar-thumb {
     background: var(--accent);
+    border-radius: 10px;
 }
 
-.hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-light);
 }
 
-.hamburger span {
-    width: 26px;
-    height: 2.5px;
-    background: var(--primary);
-    border-radius: 4px;
-    transition: var(--transition);
+/* ===== هدر در اسکرول ===== */
+.header {
+    transition: box-shadow 0.3s ease, backdrop-filter 0.3s ease;
 }
 
-/* ===== همبرگر فعال ===== */
-.hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-.hamburger.active span:nth-child(2) {
-    opacity: 0;
-}
-.hamburger.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
+/* ===== انیمیشن‌های جدید ===== */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
 }
 
-/* ===== منوی موبایل ===== */
+.hero-visual .floating-icons i {
+    animation: float 3s ease-in-out infinite;
+}
+
+.hero-visual .floating-icons i:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.hero-visual .floating-icons i:nth-child(3) {
+    animation-delay: 1s;
+}
+
+/* ===== بهبود هدر در موبایل ===== */
 @media (max-width: 768px) {
-    .hamburger {
-        display: flex;
-    }
     .nav {
-        position: fixed;
-        top: 70px;
-        left: 0;
-        right: 0;
-        background: rgba(255, 255, 255, 0.92);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        padding: 1.5rem 2rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-        transform: translateY(-120%);
-        transition: var(--transition);
-        opacity: 0;
-        pointer-events: none;
-    }
-    .nav.open {
-        transform: translateY(0);
-        opacity: 1;
-        pointer-events: all;
-    }
-    .nav-list {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
+        padding: 1rem 1.5rem;
     }
     .nav-list a {
-        width: 100%;
-        text-align: center;
         padding: 0.8rem;
+        font-size: 1rem;
     }
-}
-
-/* ===== MAIN ===== */
-.main {
-    flex: 1;
-    max-width: 1280px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 2rem 3rem;
-}
-
-/* ===== HERO ===== */
-.hero {
-    text-align: center;
-    padding: 3rem 0 2.5rem;
-}
-
-.hero h1 {
-    font-size: 3rem;
-    font-weight: 800;
-    letter-spacing: -1px;
-    background: linear-gradient(135deg, #0a1e2b 0%, #2d7a9b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.hero .subtitle {
-    font-size: 1.1rem;
-    color: #2d4a5a;
-    max-width: 600px;
-    margin: 0.8rem auto 1.5rem;
-    font-weight: 400;
-}
-
-.hero-badges {
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-}
-
-.badge {
-    background: rgba(45, 122, 155, 0.1);
-    color: var(--accent);
-    padding: 0.3rem 1rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border: 1px solid rgba(45, 122, 155, 0.15);
-}
-
-/* ===== منطقه آپلود ===== */
-.upload-area {
-    border: 2px dashed rgba(45, 122, 155, 0.3);
-    border-radius: var(--radius);
-    padding: 3.5rem 2rem;
-    text-align: center;
-    cursor: pointer;
-    transition: var(--transition);
-    background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    position: relative;
-}
-
-.upload-area:hover {
-    border-color: var(--accent);
-    background: rgba(255, 255, 255, 0.65);
-    transform: translateY(-3px);
-    box-shadow: 0 16px 48px rgba(0, 20, 40, 0.1);
-}
-
-.upload-area.dragover {
-    border-color: var(--accent);
-    background: rgba(45, 122, 155, 0.08);
-    transform: scale(1.01);
-}
-
-.upload-icon {
-    color: var(--accent);
-    margin-bottom: 0.8rem;
-}
-
-.upload-area h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--primary);
-}
-
-.upload-area p {
-    color: #3d5e6e;
-    font-size: 0.95rem;
-}
-
-.upload-area .hint {
-    display: block;
-    font-size: 0.8rem;
-    color: #6a8a98;
-    margin-top: 0.5rem;
-}
-
-.upload-area input {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-}
-
-/* ===== پیش‌نمایش ===== */
-.preview-panel {
-    margin-top: 2.5rem;
-    animation: fadeSlideUp 0.6s ease;
-}
-
-@keyframes fadeSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.preview-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-}
-
-.image-card {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: var(--radius);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    overflow: hidden;
-    transition: var(--transition);
-}
-
-.image-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 20, 40, 0.08);
-}
-
-.image-card.highlight {
-    border-color: rgba(45, 122, 155, 0.3);
-    background: rgba(255, 255, 255, 0.7);
-}
-
-.image-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 1.2rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--primary-light);
-}
-
-.size-badge {
-    background: rgba(0, 0, 0, 0.05);
-    padding: 0.15rem 0.7rem;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.size-badge.success {
-    background: rgba(45, 155, 120, 0.15);
-    color: #1a8a6a;
-}
-
-.image-card-body {
-    padding: 0.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-    background: rgba(0, 0, 0, 0.02);
-}
-
-.image-card-body img {
-    max-width: 100%;
-    max-height: 320px;
-    border-radius: 12px;
-    object-fit: contain;
-}
-
-/* ===== آمار ===== */
-.stats-bar {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin: 1.8rem 0;
-}
-
-.stat-item {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 16px;
-    padding: 1rem;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.stat-label {
-    display: block;
-    font-size: 0.75rem;
-    color: #4a6a7a;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.stat-value {
-    display: block;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin-top: 0.2rem;
-}
-
-/* ===== دکمه‌ها ===== */
-.action-bar {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 1.5rem;
-}
-
-.btn-primary,
-.btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.9rem 2.2rem;
-    border: none;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: var(--transition);
-    font-family: inherit;
-}
-
-.btn-primary {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 6px 20px rgba(10, 30, 43, 0.25);
-}
-
-.btn-primary:hover {
-    background: var(--primary-light);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(10, 30, 43, 0.3);
-}
-
-.btn-secondary {
-    background: rgba(255, 255, 255, 0.7);
-    color: var(--primary);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.9);
-    transform: translateY(-3px);
-}
-
-/* ===== فوتر ===== */
-.footer {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 1.8rem 0;
-    margin-top: auto;
-}
-
-.footer-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.footer p {
-    font-size: 0.85rem;
-    color: #3d5e6e;
-}
-
-.footer-links {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.footer-links a {
-    text-decoration: none;
-    color: #3d5e6e;
-    font-size: 0.85rem;
-    transition: var(--transition);
-}
-
-.footer-links a:hover {
-    color: var(--accent);
-}
-
-/* ===== ریسپانسیو ===== */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.2rem;
-    }
-    .preview-grid {
-        grid-template-columns: 1fr;
-    }
-    .stats-bar {
-        grid-template-columns: 1fr;
-    }
-    .action-bar {
+    .page-header {
         flex-direction: column;
+        align-items: flex-start;
     }
-    .btn-primary,
-    .btn-secondary {
-        width: 100%;
-        justify-content: center;
+    .history-item {
+        flex-wrap: wrap;
+        padding: 1rem;
     }
-    .footer-container {
-        flex-direction: column;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .main {
-        padding: 0 1rem 2rem;
-    }
-    .header-container {
-        padding: 0 1rem;
-    }
-    .upload-area {
-        padding: 2rem 1rem;
+    .history-delete {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
     }
 }
