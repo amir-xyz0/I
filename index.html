@@ -3,28 +3,24 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>فشرده‌ساز هوشمند تصویر | ImageCompressor</title>
-    <meta name="description" content="کاهش حجم تصاویر بدون افت کیفیت - کاملاً در مرورگر شما" />
-    <link rel="stylesheet" href="css/style.css" />
-    <!-- Font Awesome برای آیکون‌های حرفه‌ای -->
+    <title>فشرده‌ساز هوشمند تصویر</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-    <!-- ===== HEADER با منوی کامل ===== -->
-    <header class="header glass" id="mainHeader">
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="mainHeader">
         <div class="header-container">
-            <div class="logo">
-                <i class="fas fa-compress-arrows-alt logo-icon"></i>
-                <span class="logo-text">ImageCompressor</span>
-            </div>
+            <a href="#" class="logo" onclick="showPage('home')">
+                <i class="fas fa-compress-arrows-alt"></i>
+                <span>ImageCompressor</span>
+            </a>
             <nav class="nav" id="mainNav">
                 <ul class="nav-list">
-                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> خانه</a></li>
-                    <li><a href="features.html"><i class="fas fa-star"></i> امکانات</a></li>
-                    <li><a href="history.html"><i class="fas fa-history"></i> تاریخچه</a></li>
-                    <li><a href="about.html"><i class="fas fa-info-circle"></i> درباره ما</a></li>
-                    <li><a href="contact.html"><i class="fas fa-envelope"></i> تماس</a></li>
+                    <li><a href="#" class="active" data-page="home"><i class="fas fa-home"></i> خانه</a></li>
+                    <li><a href="#" data-page="history"><i class="fas fa-history"></i> تاریخچه</a></li>
+                    <li><a href="#" data-page="about"><i class="fas fa-info-circle"></i> درباره</a></li>
                 </ul>
             </nav>
             <button class="hamburger" id="hamburger">
@@ -33,78 +29,150 @@
         </div>
     </header>
 
-    <!-- ===== محتوای اصلی ===== -->
+    <!-- ===== MAIN ===== -->
     <main class="main">
-        <!-- HERO جدید با انیمیشن -->
-        <section class="hero">
-            <div class="hero-content">
-                <div class="hero-badge">نسخه ۲.۰</div>
-                <h1>فشرده‌سازی هوشمند <br />تصاویر با کیفیت بی‌نظیر</h1>
-                <p class="subtitle">کاهش حجم تا ۸۵٪ بدون هیچ افت کیفیت قابل مشاهده — همه‌چیز در مرورگر شما</p>
-                <div class="hero-badges">
-                    <span class="badge"><i class="fas fa-wifi-slash"></i> بدون نیاز به اینترنت</span>
-                    <span class="badge"><i class="fas fa-shield-alt"></i> حریم خصوصی کامل</span>
-                    <span class="badge"><i class="fas fa-gem"></i> رایگان همیشگی</span>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="floating-icons">
-                    <i class="fas fa-image"></i>
-                    <i class="fas fa-arrow-right"></i>
-                    <i class="fas fa-file-image"></i>
-                </div>
-            </div>
-        </section>
 
-        <!-- بخش فشرده‌ساز -->
-        <section class="compressor-section" id="compressor">
-            <div class="container">
-                <!-- منطقه آپلود با انیمیشن -->
-                <div class="upload-area glass" id="uploadArea">
+        <!-- صفحه خانه -->
+        <section id="page-home" class="page active">
+            <div class="hero">
+                <div class="hero-content">
+                    <span class="hero-badge">⚡ سریع و هوشمند</span>
+                    <h1>فشرده‌سازی<br />تصاویر حرفه‌ای</h1>
+                    <p>کاهش حجم تا ۸۰٪ بدون افت کیفیت — کاملاً در مرورگر شما</p>
+                    <div class="hero-features">
+                        <span><i class="fas fa-check-circle"></i> بدون اینترنت</span>
+                        <span><i class="fas fa-check-circle"></i> حریم خصوصی</span>
+                        <span><i class="fas fa-check-circle"></i> رایگان</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="compressor-wrapper">
+                <div class="upload-box" id="uploadArea">
                     <div class="upload-icon">
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
-                    <h3>تصویر خود را اینجا بکشید</h3>
-                    <p>یا برای انتخاب فایل کلیک کنید</p>
-                    <span class="hint"><i class="fas fa-check-circle"></i> پشتیبانی از PNG, JPG, WebP — حداکثر ۲۰ مگابایت</span>
-                    <input type="file" id="fileInput" accept="image/*" multiple />
+                    <h3>تصویر را بکشید یا کلیک کنید</h3>
+                    <p>PNG · JPG · WebP — تا ۲۰ مگابایت</p>
+                    <input type="file" id="fileInput" accept="image/*" />
                 </div>
 
-                <!-- لودینگ پیشرفته -->
-                <div class="loading-overlay" id="loadingOverlay">
-                    <div class="loading-spinner">
-                        <div class="spinner-ring"></div>
-                        <div class="spinner-ring"></div>
-                        <div class="spinner-ring"></div>
-                    </div>
-                    <p class="loading-text">در حال فشرده‌سازی...</p>
-                    <div class="loading-progress">
-                        <div class="progress-bar" id="progressBar"></div>
+                <!-- لودینگ -->
+                <div class="loading-box" id="loadingBox">
+                    <div class="spinner"></div>
+                    <p>در حال فشرده‌سازی...</p>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill"></div>
                     </div>
                 </div>
 
-                <!-- پیش‌نمایش و نتایج -->
-                <div class="preview-panel" id="previewPanel" style="display:none;">
-                    <!-- ... کد قبلی ... -->
+                <!-- نتیجه -->
+                <div class="result-box" id="resultBox">
+                    <div class="result-grid">
+                        <div class="result-card">
+                            <div class="result-header">
+                                <span>اصلی</span>
+                                <span class="tag" id="origSize">۰ KB</span>
+                            </div>
+                            <div class="result-image">
+                                <img id="origImg" alt="تصویر اصلی" />
+                            </div>
+                        </div>
+                        <div class="result-card highlight">
+                            <div class="result-header">
+                                <span>فشرده</span>
+                                <span class="tag success" id="compSize">۰ KB</span>
+                            </div>
+                            <div class="result-image">
+                                <img id="compImg" alt="تصویر فشرده" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-stats">
+                        <div>
+                            <span>کاهش</span>
+                            <strong id="savedStat">۰%</strong>
+                        </div>
+                        <div>
+                            <span>کیفیت</span>
+                            <strong id="qualityStat">عالی</strong>
+                        </div>
+                        <div>
+                            <span>زمان</span>
+                            <strong id="timeStat">۰ms</strong>
+                        </div>
+                    </div>
+
+                    <div class="result-actions">
+                        <button id="downloadBtn" class="btn-primary">
+                            <i class="fas fa-download"></i> دانلود
+                        </button>
+                        <button id="resetBtn" class="btn-secondary">
+                            <i class="fas fa-redo"></i> دوباره
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <!-- صفحه تاریخچه -->
+        <section id="page-history" class="page">
+            <div class="page-head">
+                <h2><i class="fas fa-history"></i> تاریخچه</h2>
+                <button id="clearAllBtn" class="btn-danger">
+                    <i class="fas fa-trash"></i> پاک کردن
+                </button>
+            </div>
+            <div id="historyContainer" class="history-container"></div>
+            <div id="emptyHistory" class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h3>تاریخچه خالی</h3>
+                <p>هنوز تصویری فشرده نکردید</p>
+                <button onclick="showPage('home')" class="btn-primary">
+                    <i class="fas fa-arrow-left"></i> برو به فشرده‌ساز
+                </button>
+            </div>
+        </section>
+
+        <!-- صفحه درباره -->
+        <section id="page-about" class="page">
+            <div class="about-box">
+                <h2><i class="fas fa-info-circle"></i> درباره ما</h2>
+                <p>
+                    <strong>ImageCompressor</strong> ابزاری رایگان برای کاهش حجم تصاویر
+                    بدون افت کیفیت. تمام پردازش‌ها در مرورگر شما انجام می‌شود.
+                </p>
+                <div class="about-tags">
+                    <span><i class="fab fa-github"></i> متن‌باز</span>
+                    <span><i class="fas fa-lock"></i> امن</span>
+                    <span><i class="fas fa-bolt"></i> سریع</span>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- ===== فوتر ===== -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="footer-container">
-            <p><i class="fas fa-heart" style="color:#e74c3c;"></i> ساخته شده با عشق در ایران</p>
+            <p><i class="fas fa-heart" style="color:#e74c3c;"></i> ساخته شده در ایران</p>
             <div class="footer-links">
-                <a href="about.html">درباره ما</a>
-                <a href="contact.html">تماس</a>
+                <a href="#" onclick="showPage('about')">درباره</a>
                 <a href="https://github.com" target="_blank"><i class="fab fa-github"></i> گیت‌هاب</a>
             </div>
         </div>
     </footer>
 
+    <!-- ===== کتابخانه ===== -->
     <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js">
     </script>
-    <script src="js/script.js"></script>
+
+    <!-- ===== فایل‌های JS جداگانه ===== -->
+    <script src="js/navigation.js"></script>
+    <script src="js/history.js"></script>
+    <script src="js/compressor.js"></script>
+    <script src="js/app.js"></script>
+
 </body>
 </html>
