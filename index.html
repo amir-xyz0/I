@@ -3,55 +3,128 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>فشرده‌ساز هوشمند تصویر</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>فشرده‌ساز هوشمند تصویر | ImageCompressor</title>
+    <meta name="description" content="کاهش حجم تصاویر بدون افت کیفیت - کاملاً در مرورگر شما" />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>⚡ فشرده‌ساز هوشمند تصویر</h1>
-            <p>کاهش حجم تصاویر بدون افت کیفیت — کاملاً در مرورگر شما</p>
-        </header>
-
-        <div class="upload-area" id="uploadArea">
-            <div class="icon">📤</div>
-            <p>تصویر را اینجا بکشید یا کلیک کنید</p>
-            <span>PNG, JPG, WebP — تا ۱۰ مگابایت</span>
-            <input type="file" id="fileInput" accept="image/*" />
+    <!-- ===== HEADER با منوی شیشه‌ای ===== -->
+    <header class="header glass">
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">ImageCompressor</span>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="active">خانه</a></li>
+                    <li><a href="features.html">امکانات</a></li>
+                    <li><a href="about.html">درباره ما</a></li>
+                    <li><a href="contact.html">تماس</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </button>
         </div>
+    </header>
 
-        <div class="preview" id="preview" style="display:none;">
-            <div class="image-box">
-                <img id="originalImage" alt="تصویر اصلی" />
-            </div>
-            <div class="details">
-                <div class="info">
-                    <span>📁 حجم اصلی:</span>
-                    <strong id="originalSize">۰</strong>
-                </div>
-                <div class="info">
-                    <span>📦 حجم فشرده:</span>
-                    <strong id="compressedSize">۰</strong>
-                </div>
-                <div class="info">
-                    <span>📉 کاهش حجم:</span>
-                    <strong id="savedPercent">۰٪</strong>
+    <!-- ===== محتوای اصلی ===== -->
+    <main class="main">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>فشرده‌سازی هوشمند تصاویر</h1>
+                <p class="subtitle">کاهش حجم تا ۸۵٪ بدون هیچ افت کیفیت قابل مشاهده — همه‌چیز در مرورگر شما</p>
+                <div class="hero-badges">
+                    <span class="badge">بدون نیاز به اینترنت</span>
+                    <span class="badge">حریم خصوصی کامل</span>
+                    <span class="badge">رایگان همیشگی</span>
                 </div>
             </div>
-            <div class="actions">
-                <button id="downloadBtn" class="btn-primary">⬇ دانلود فشرده</button>
-                <button id="resetBtn" class="btn-secondary">🔄 تصویر جدید</button>
+        </section>
+
+        <section class="compressor-section">
+            <div class="container">
+                <!-- منطقه آپلود -->
+                <div class="upload-area glass" id="uploadArea">
+                    <div class="upload-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 16V4M8 8l4-4 4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/>
+                        </svg>
+                    </div>
+                    <h3>تصویر خود را اینجا بکشید</h3>
+                    <p>یا برای انتخاب فایل کلیک کنید</p>
+                    <span class="hint">پشتیبانی از PNG, JPG, WebP — حداکثر ۲۰ مگابایت</span>
+                    <input type="file" id="fileInput" accept="image/*" />
+                </div>
+
+                <!-- پیش‌نمایش و نتایج -->
+                <div class="preview-panel" id="previewPanel" style="display:none;">
+                    <div class="preview-grid">
+                        <div class="image-card">
+                            <div class="image-card-header">
+                                <span>تصویر اصلی</span>
+                                <span class="size-badge" id="originalSize">۰ KB</span>
+                            </div>
+                            <div class="image-card-body">
+                                <img id="originalImage" alt="تصویر اصلی" />
+                            </div>
+                        </div>
+                        <div class="image-card highlight">
+                            <div class="image-card-header">
+                                <span>تصویر فشرده‌شده</span>
+                                <span class="size-badge success" id="compressedSize">۰ KB</span>
+                            </div>
+                            <div class="image-card-body">
+                                <img id="compressedImage" alt="تصویر فشرده شده" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-bar">
+                        <div class="stat-item">
+                            <span class="stat-label">کاهش حجم</span>
+                            <strong class="stat-value" id="savedPercent">۰٪</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">کیفیت</span>
+                            <strong class="stat-value" id="qualityStatus">۱۰۰٪</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">زمان پردازش</span>
+                            <strong class="stat-value" id="processTime">۰ms</strong>
+                        </div>
+                    </div>
+
+                    <div class="action-bar">
+                        <button id="downloadBtn" class="btn-primary">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                            </svg>
+                            دانلود فایل فشرده
+                        </button>
+                        <button id="resetBtn" class="btn-secondary">انتخاب تصویر جدید</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== فوتر ===== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; ۲۰۲۵ ImageCompressor — ساخته شده با عشق در ایران</p>
+            <div class="footer-links">
+                <a href="about.html">درباره ما</a>
+                <a href="contact.html">تماس</a>
+                <a href="https://github.com" target="_blank">گیت‌هاب</a>
             </div>
         </div>
-
-        <footer>
-            <p>ساخته شده با ❤️ — بدون نیاز به اینترنت و کلید API</p>
-        </footer>
-    </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js">
     </script>
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
