@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>فشرده‌ساز هوشمند تصویر</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>⚡ فشرده‌ساز هوشمند تصویر</h1>
+            <p>کاهش حجم تصاویر بدون افت کیفیت — کاملاً در مرورگر شما</p>
+        </header>
+
+        <div class="upload-area" id="uploadArea">
+            <div class="icon">📤</div>
+            <p>تصویر را اینجا بکشید یا کلیک کنید</p>
+            <span>PNG, JPG, WebP — تا ۱۰ مگابایت</span>
+            <input type="file" id="fileInput" accept="image/*" />
+        </div>
+
+        <div class="preview" id="preview" style="display:none;">
+            <div class="image-box">
+                <img id="originalImage" alt="تصویر اصلی" />
+            </div>
+            <div class="details">
+                <div class="info">
+                    <span>📁 حجم اصلی:</span>
+                    <strong id="originalSize">۰</strong>
+                </div>
+                <div class="info">
+                    <span>📦 حجم فشرده:</span>
+                    <strong id="compressedSize">۰</strong>
+                </div>
+                <div class="info">
+                    <span>📉 کاهش حجم:</span>
+                    <strong id="savedPercent">۰٪</strong>
+                </div>
+            </div>
+            <div class="actions">
+                <button id="downloadBtn" class="btn-primary">⬇ دانلود فشرده</button>
+                <button id="resetBtn" class="btn-secondary">🔄 تصویر جدید</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>ساخته شده با ❤️ — بدون نیاز به اینترنت و کلید API</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js">
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
